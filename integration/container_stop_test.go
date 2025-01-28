@@ -62,7 +62,7 @@ func TestSharedPidMultiProcessContainerStop(t *testing.T) {
 			require.NoError(t, runtimeService.StartContainer(cn))
 
 			t.Log("Stop the container")
-			require.NoError(t, runtimeService.StopContainer(cn, 0))
+			require.NoError(t, runtimeService.StopContainer(cn, 0, "SIGTERM"))
 
 			t.Log("The container state should be exited")
 			s, err := runtimeService.ContainerStatus(cn)
@@ -121,7 +121,7 @@ func TestContainerStopCancellation(t *testing.T) {
 	}, 100*time.Millisecond, 5*time.Second))
 
 	t.Log("Stop the container with 1s timeout, without shorter context timeout")
-	assert.NoError(t, runtimeService.StopContainer(cn, 1))
+	assert.NoError(t, runtimeService.StopContainer(cn, 1, "SIGTERM"))
 
 	t.Log("The container state should be exited")
 	s, err := runtimeService.ContainerStatus(cn)

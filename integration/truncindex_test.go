@@ -103,7 +103,7 @@ func TestTruncIndex(t *testing.T) {
 	defer func() {
 		// The 2th StopPodSandbox will fail
 		if !hasStoppedContainer {
-			assert.NoError(t, runtimeService.StopContainer(cnTruncIndex, 10))
+			assert.NoError(t, runtimeService.StopContainer(cnTruncIndex, 10, "SIGTERM"))
 		}
 	}()
 
@@ -141,7 +141,7 @@ func TestTruncIndex(t *testing.T) {
 	// TODO(yanxuean): add test case for ListContainers
 
 	t.Logf("Get a non exist container status by truncindex")
-	err = runtimeService.StopContainer(cnTruncIndex, 10)
+	err = runtimeService.StopContainer(cnTruncIndex, 10, "SIGTERM")
 	assert.NoError(t, err)
 	if err == nil {
 		hasStoppedContainer = true

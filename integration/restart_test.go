@@ -129,7 +129,7 @@ func TestContainerdRestart(t *testing.T) {
 				require.NoError(t, runtimeService.StartContainer(cid))
 			case runtime.ContainerState_CONTAINER_EXITED:
 				require.NoError(t, runtimeService.StartContainer(cid))
-				require.NoError(t, runtimeService.StopContainer(cid, 10))
+				require.NoError(t, runtimeService.StopContainer(cid, 10, "SIGTERM"))
 			}
 		}
 		if s.state == runtime.PodSandboxState_SANDBOX_NOTREADY {

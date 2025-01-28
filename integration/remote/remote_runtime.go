@@ -273,7 +273,11 @@ func (r *RuntimeService) StartContainer(containerID string, opts ...grpc.CallOpt
 }
 
 // StopContainer stops a running container with a grace period (i.e., timeout).
-func (r *RuntimeService) StopContainer(containerID string, timeout int64, opts ...grpc.CallOption) error {
+func (r *RuntimeService) StopContainer(containerID string, timeout int64, stopSignal string, opts ...grpc.CallOption) error {
+	if stopSignal == "" {
+		stopSignal = "SIGTERM"
+	}
+	klog.Infof("HOHOHO Container is gonna be stopped now!")
 	klog.V(10).Infof("[RuntimeService] StopContainer (containerID=%v, timeout=%v)", containerID, timeout)
 	// Use timeout + default timeout (2 minutes) as timeout to leave extra time
 	// for SIGKILL container and request latency.
@@ -285,6 +289,7 @@ func (r *RuntimeService) StopContainer(containerID string, timeout int64, opts .
 	_, err := r.runtimeClient.StopContainer(ctx, &runtimeapi.StopContainerRequest{
 		ContainerId: containerID,
 		Timeout:     timeout,
+		StopSignal: stopSignal,
 	}, opts...)
 	if err != nil {
 		klog.Errorf("StopContainer %q from runtime service failed: %v", containerID, err)

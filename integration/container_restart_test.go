@@ -46,11 +46,11 @@ func TestContainerRestart(t *testing.T) {
 	}()
 	require.NoError(t, runtimeService.StartContainer(cn))
 	defer func() {
-		assert.NoError(t, runtimeService.StopContainer(cn, 10))
+		assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	}()
 
 	t.Logf("Restart the container with same config")
-	require.NoError(t, runtimeService.StopContainer(cn, 10))
+	require.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	require.NoError(t, runtimeService.RemoveContainer(cn))
 
 	cn, err = runtimeService.CreateContainer(sb, containerConfig, sbConfig)
@@ -82,11 +82,11 @@ func TestFailedContainerRestart(t *testing.T) {
 	}()
 	require.Error(t, runtimeService.StartContainer(cn))
 	defer func() {
-		assert.NoError(t, runtimeService.StopContainer(cn, 10))
+		assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	}()
 
 	t.Logf("Create the container with a proper command")
-	require.NoError(t, runtimeService.StopContainer(cn, 10))
+	require.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	require.NoError(t, runtimeService.RemoveContainer(cn))
 
 	containerConfig = ContainerConfig(

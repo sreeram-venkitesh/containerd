@@ -1,6 +1,8 @@
 module github.com/containerd/containerd/v2
 
-go 1.22.0
+go 1.23.0
+
+toolchain go1.23.2
 
 require (
 	dario.cat/mergo v1.0.1
@@ -151,3 +153,5 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 	tags.cncf.io/container-device-interface/specs-go v0.8.0 // indirect
 )
+
+replace k8s.io/cri-api => ../kubernetes/staging/src/k8s.io/cri-api/

@@ -59,7 +59,7 @@ func TestContainerDrainExecIOAfterExit(t *testing.T) {
 	t.Log("Start the container")
 	require.NoError(t, runtimeService.StartContainer(cn))
 	defer func() {
-		assert.NoError(t, runtimeService.StopContainer(cn, 10))
+		assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	}()
 
 	t.Log("Exec in container")

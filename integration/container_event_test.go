@@ -106,7 +106,7 @@ func TestContainerEvents(t *testing.T) {
 
 	t.Cleanup(func() {
 		t.Logf("Step 4: StopContainer and check events")
-		assert.NoError(t, runtimeService.StopContainer(cn, 10))
+		assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 		expectedContainerStates := []runtime.ContainerState{runtime.ContainerState_CONTAINER_EXITED}
 		checkContainerEventResponse(t, containerEventsChannels, runtime.ContainerEventType_CONTAINER_STOPPED_EVENT, expectedPodSandboxStatus, expectedContainerStates)
 	})

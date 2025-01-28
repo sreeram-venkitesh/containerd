@@ -324,7 +324,7 @@ func shouldManipulateContainersInPodAfterUpgrade(t *testing.T,
 		require.NoError(t, err)
 
 		t.Logf("Stopping container %s", cntr1)
-		require.NoError(t, rSvc.StopContainer(cntr1, 0))
+		require.NoError(t, rSvc.StopContainer(cntr1, 0, "SIGTERM"))
 		checkContainerState(t, rSvc, cntr1, criruntime.ContainerState_CONTAINER_EXITED)
 
 		cntr1DataDir := podCtx.containerDataDir(cntr1)
@@ -339,7 +339,7 @@ func shouldManipulateContainersInPodAfterUpgrade(t *testing.T,
 		checkContainerState(t, rSvc, cntr2, criruntime.ContainerState_CONTAINER_RUNNING)
 
 		t.Logf("Stopping running container %s", cntr2)
-		require.NoError(t, rSvc.StopContainer(cntr2, 0))
+		require.NoError(t, rSvc.StopContainer(cntr2, 0, "SIGTERM"))
 		checkContainerState(t, rSvc, cntr2, criruntime.ContainerState_CONTAINER_EXITED)
 
 		t.Logf("Removing exited container %s", cntr3)
@@ -515,7 +515,7 @@ func (pCtx *podTCtx) createContainer(name, imageRef string, wantedState crirunti
 		require.NoError(t, pCtx.rSvc.StartContainer(cnID))
 	case criruntime.ContainerState_CONTAINER_EXITED:
 		require.NoError(t, pCtx.rSvc.StartContainer(cnID))
-		require.NoError(t, pCtx.rSvc.StopContainer(cnID, 0))
+		require.NoError(t, pCtx.rSvc.StopContainer(cnID, 0, "SIGTERM"))
 	default:
 		t.Fatalf("unsupport state %s", wantedState)
 	}

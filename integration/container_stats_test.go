@@ -51,7 +51,7 @@ func TestContainerStats(t *testing.T) {
 	}()
 	require.NoError(t, runtimeService.StartContainer(cn))
 	defer func() {
-		assert.NoError(t, runtimeService.StopContainer(cn, 10))
+		assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	}()
 
 	t.Logf("Fetch stats for container")
@@ -93,7 +93,7 @@ func TestContainerConsumedStats(t *testing.T) {
 	}()
 	require.NoError(t, runtimeService.StartContainer(cn))
 	defer func() {
-		assert.NoError(t, runtimeService.StopContainer(cn, 10))
+		assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 	}()
 
 	t.Logf("Fetch initial stats for container")
@@ -174,7 +174,7 @@ func TestContainerListStats(t *testing.T) {
 		}()
 		require.NoError(t, runtimeService.StartContainer(cn))
 		defer func() {
-			assert.NoError(t, runtimeService.StopContainer(cn, 10))
+			assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 		}()
 	}
 
@@ -229,7 +229,7 @@ func TestContainerListStatsWithIdFilter(t *testing.T) {
 		}()
 		require.NoError(t, runtimeService.StartContainer(cn))
 		defer func() {
-			assert.NoError(t, runtimeService.StopContainer(cn, 10))
+			assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 		}()
 	}
 
@@ -289,7 +289,7 @@ func TestContainerListStatsWithSandboxIdFilter(t *testing.T) {
 		}()
 		require.NoError(t, runtimeService.StartContainer(cn))
 		defer func() {
-			assert.NoError(t, runtimeService.StopContainer(cn, 10))
+			assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 		}()
 	}
 
@@ -350,7 +350,7 @@ func TestContainerListStatsWithIdSandboxIdFilter(t *testing.T) {
 		}()
 		require.NoError(t, runtimeService.StartContainer(cn))
 		defer func() {
-			assert.NoError(t, runtimeService.StopContainer(cn, 10))
+			assert.NoError(t, runtimeService.StopContainer(cn, 10, "SIGTERM"))
 		}()
 	}
 	t.Logf("Fetch container stats for sandbox ID and container ID filter")

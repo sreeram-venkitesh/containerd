@@ -56,7 +56,7 @@ func TestContainerLifecycleWithoutImageRef(t *testing.T) {
 	assert.Equal(t, runtime.ContainerState_CONTAINER_RUNNING, status.GetState())
 
 	t.Logf("Stop container")
-	err = runtimeService.StopContainer(cn, 1)
+	err = runtimeService.StopContainer(cn, 1, "SIGTERM")
 	assert.NoError(t, err)
 
 	t.Log("Container status should be exited")

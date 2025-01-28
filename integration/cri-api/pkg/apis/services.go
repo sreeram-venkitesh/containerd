@@ -56,7 +56,7 @@ type ContainerManager interface {
 	// StartContainer starts the container.
 	StartContainer(containerID string, opts ...grpc.CallOption) error
 	// StopContainer stops a running container with a grace period (i.e., timeout).
-	StopContainer(containerID string, timeout int64, opts ...grpc.CallOption) error
+	StopContainer(containerID string, timeout int64, stopSignal string, opts ...grpc.CallOption) error
 	// RemoveContainer removes the container.
 	RemoveContainer(containerID string, opts ...grpc.CallOption) error
 	// ListContainers lists all containers by filters.

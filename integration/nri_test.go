@@ -682,7 +682,7 @@ func (tc *nriTest) startContainer(podID, name string, opts ...ContainerOpts) str
 	tc.ctrs = append(tc.ctrs, ctrID)
 
 	tc.t.Cleanup(func() {
-		assert.NoError(tc.t, tc.runtime.StopContainer(ctrID, containerStopTimeout))
+		assert.NoError(tc.t, tc.runtime.StopContainer(ctrID, containerStopTimeout, "SIGTERM"))
 		assert.NoError(tc.t, tc.runtime.RemoveContainer(ctrID))
 	})
 

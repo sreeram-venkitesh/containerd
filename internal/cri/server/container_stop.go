@@ -52,7 +52,7 @@ func (c *criService) StopContainer(ctx context.Context, r *runtime.StopContainer
 		return &runtime.StopContainerResponse{}, nil
 	}
 	span.SetAttributes(tracing.Attribute("container.id", container.ID))
-	if err := c.stopContainer(ctx, container, time.Duration(r.GetTimeout())*time.Second); err != nil {
+	if err := c.stopContainer(ctx, container, time.Duration(r.GetTimeout())*time.Second, r.GetStopSignal()); err != nil {
 		return nil, err
 	}
 
@@ -77,7 +77,8 @@ func (c *criService) StopContainer(ctx context.Context, r *runtime.StopContainer
 }
 
 // stopContainer stops a container based on the container metadata.
-func (c *criService) stopContainer(ctx context.Context, container containerstore.Container, timeout time.Duration) error {
+func (c *criService) stopContainer(ctx context.Context, container containerstore.Container, timeout time.Duration, containerStopSignal string) error {
+	log.G(ctx).Infof("HOHOHO container is gonna be stopped now!")
 	span := tracing.SpanFromContext(ctx)
 	start := time.Now()
 	id := container.ID
@@ -133,7 +134,10 @@ func (c *criService) stopContainer(ctx context.Context, container containerstore
 	// task from containerd after it handles the Exited event.
 	if timeout > 0 {
 		stopSignal := "SIGTERM"
-		if container.StopSignal != "" {
+		if containerStopSignal != "" {
+			stopSignal = containerStopSignal 
+			log.G(ctx).Infof("HOHOHO container stop signal kitti")
+		} else if  container.StopSignal != "" {
 			stopSignal = container.StopSignal
 		} else {
 			// The image may have been deleted, and the `StopSignal` field is
