@@ -85,6 +85,14 @@ func (c *criService) ContainerStatus(ctx context.Context, r *runtime.ContainerSt
 	}, nil
 }
 
+func toCRIContainerStopSignal(container containerstore.Container) (string, error) {
+	stopSig := container.Config.GetStopSignal()
+	if stopSig == "" {
+		stopSig = container.StopSignal
+	}
+	return stopSig, nil
+}
+
 // toCRIContainerStatus converts internal container object to CRI container status.
 func toCRIContainerStatus(ctx context.Context, container containerstore.Container, spec *runtime.ImageSpec, imageRef string) (*runtime.ContainerStatus, error) {
 	meta := container.Metadata
@@ -114,6 +122,8 @@ func toCRIContainerStatus(ctx context.Context, container containerstore.Containe
 		runtimeUser = &runtime.ContainerUser{}
 	}
 
+	finalStopSignal, _ := toCRIContainerStopSignal(ctx, container)
+
 	return &runtime.ContainerStatus{
 		Id:          meta.ID,
 		Metadata:    meta.Config.GetMetadata(),
@@ -132,6 +142,7 @@ func toCRIContainerStatus(ctx context.Context, container containerstore.Containe
 		LogPath:     meta.LogPath,
 		Resources:   status.Resources,
 		User:        runtimeUser,
+		StopSignal:  finalStopSignal,
 	}, nil
 }
 
